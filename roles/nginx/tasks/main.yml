@@ -1,0 +1,18 @@
+- name: INCLUDE | nginx installation configuration for {{ ansible_distribution }}. 
+  include: "install_{{ ansible_distribution }}.yml"
+
+- name: Create {{ nginx_group }} group.
+  group: name={{ nginx_group }} state=present 
+
+- name: Create {{ nginx_user }} user.
+  user: "name={{ nginx_user }} state=present shell=/usr/sbin/nologin home=/var/www groups={{ nginx_group }}"
+
+- name: Create {{ nginx_sites_available }} directory.
+  file: "dest={{ nginx_sites_available }} state=directory owner={{ nginx_user }} group={{ nginx_group }} mode=0755"
+
+- name: Create {{ nginx_sites_enabled }} directory.
+  file: "dest={{ nginx_sites_enabled }} state=directory owner={{ nginx_user }} group={{ nginx_group }} mode=0755"
+
+- name: Generate {{ nginx_conf_root }}/nginx.conf.
+  template: "src=nginx.conf.j2 dest={{ nginx_conf_root }}/nginx.conf" 
+  notify: reload nginx 
