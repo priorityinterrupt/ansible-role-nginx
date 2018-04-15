@@ -1,0 +1,7 @@
+# Vagrant files used for testing 
+
+.vagrant
+*.retry
+Vagrantfile
+vagrant.yml
+*.log
