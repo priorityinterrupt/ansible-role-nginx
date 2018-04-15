@@ -6,25 +6,20 @@
     state: present
   when: nginx_nginxorg_repo    
 
-- name: Add nginx.org apt repository for {{ ansible_distribution_release }} | STABLE
-  apt_repository:
-    repo: deb http://nginx.org/packages/{{ ansible_distribution | lower }}/ {{ ansible_distribution_release }} nginx
-    state: present
-  register: nginx_nginxorg_repo_added
-  when: 
-    - ansible_distribution_release in nginx_nginxorg_supported
-    - nginx_nginxorg_repo
-    - not nginx_nginxorg_mainline
+- name: Configure URL for nginx repository. 
+  set_fact:
+    repo_url: "{{ 'http://nginx.org/packages/' + ansible_distribution|lower + '/' 
+      if not nginx_nginxorg_mainline else
+      'http://nginx.org/packages/mainline/' + ansible_distribution|lower + '/' }}"
 
-- name: Add nginx.org apt repository for {{ ansible_distribution_release }} | MAINLINE
+- name: Add nginx.org apt repository for {{ ansible_distribution_release }} 
   apt_repository:
-    repo: deb http://nginx.org/packages/mainline/{{ ansible_distribution | lower }}/ {{ ansible_distribution_release }} nginx
+    repo: "deb {{ repo_url }} {{ ansible_distribution_release }} nginx"
     state: present
   register: nginx_nginxorg_repo_added
   when: 
     - ansible_distribution_release in nginx_nginxorg_supported
     - nginx_nginxorg_repo
-    - nginx_nginxorg_mainline
 
 - name: Install nginx.
   apt: name=nginx state=present

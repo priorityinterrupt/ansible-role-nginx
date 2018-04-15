@@ -1,49 +1,35 @@
 ---
 
+- set_fact:
+    os_name: "{{ 'rhel' if ansible_distribution == 'RedHat' else 'centos' }}" 
+
 - name: Add nginx.org signing key
   rpm_key:
     key: https://nginx.org/keys/nginx_signing.key
     state: present
   when: nginx_nginxorg_repo    
 
-- name: Set os_name for use in baseurl in yum repository. 
+- name: Configure URL for nginx repository. 
   set_fact:
-    os_name: "{{ 'rhel' if ansible_distribution == 'RedHat' else 'centos' }}" 
+    repo_url: "{{ 'http://nginx.org/packages/' + os_name + '/' + ansible_distribution_major_version + '/$basearch/' 
+      if not nginx_nginxorg_mainline else 
+      'http://nginx.org/packages/mainline/' + os_name + '/' + ansible_distribution_major_version + '/$basearch/' }}"
 
-- name: Add nginx.org yum repository for {{ os_name }}/{{ ansible_distribution_major_version }} | STABLE
+- name: Add nginx.org yum repository for {{ os_name }}/{{ ansible_distribution_major_version }}
   yum_repository:
-    name: nginx_stable
-    description: "Latest stable version of nginx from nginx.org"
+    name: nginx
+    description: "Latest version of nginx from nginx.org"
     enabled: "yes"
     gpgcheck: "yes"
-    baseurl: http://nginx.org/packages/{{ os_name }}/{{ ansible_distribution_major_version }}/$basearch/
-    cost: "1"
+    baseurl: "{{ repo_url }}"
     state: present
   register: nginx_nginxorg_repo_added
   when: 
     - ansible_distribution_major_version in nginx_nginxorg_supported
     - nginx_nginxorg_repo
-    - not nginx_nginxorg_mainline
-
-- name: Add nginx.org yum repository for {{ os_name }}/{{ ansible_distribution_major_version }} cd | MAINLINE
-  yum_repository:
-    name: nginx_mainstream
-    description: "Latest mainstream version of nginx from nginx.org"
-    enabled: "yes"
-    gpgcheck: "yes"
-    baseurl: http://nginx.org/packages/{{ os_name }}/{{ ansible_distribution_major_version }}/$basearch/
-    cost: "1"
-    state: present
-  register: nginx_nginxorg_repo_added
-  when: 
-    - ansible_distribution_major_version in nginx_nginxorg_supported
-    - nginx_nginxorg_repo
-    - nginx_nginxorg_mainline
 
 - name: Disable EPEL
-  yum_repository:
-    name: epel
-    state: absent
+  yum_repository: name=epel state=absent
   notify: yum-clean-metadata
   when: 
     - nginx_nginxorg_repo
