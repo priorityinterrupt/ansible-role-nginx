@@ -3,9 +3,13 @@
 - set_fact:
     os_name: "{{ 'rhel' if ansible_distribution == 'RedHat' else 'centos' }}" 
 
+- name: Copy nginx_signing.key
+  copy: src=files/nginx_signing.key dest=/tmp/nginx_signing.key
+  when: nginx_nginxorg_repo
+
 - name: Add nginx.org signing key
   rpm_key:
-    key: https://nginx.org/keys/nginx_signing.key
+    key: /tmp/nginx_signing.key
     state: present
   when: nginx_nginxorg_repo    
 
