@@ -5,19 +5,23 @@
 
 - name: Copy nginx_signing.key
   copy: src=files/nginx_signing.key dest=/tmp/nginx_signing.key
-  when: nginx_nginxorg_repo
+  when: 
+    - nginx_nginxorg_repo
 
 - name: Add nginx.org signing key
   rpm_key:
     key: /tmp/nginx_signing.key
     state: present
-  when: nginx_nginxorg_repo    
+  when: 
+    - nginx_nginxorg_repo    
 
 - name: Configure URL for nginx repository. 
   set_fact:
     repo_url: "{{ 'http://nginx.org/packages/' + os_name + '/' + ansible_distribution_major_version + '/$basearch/' 
       if not nginx_nginxorg_mainline else 
       'http://nginx.org/packages/mainline/' + os_name + '/' + ansible_distribution_major_version + '/$basearch/' }}"
+  when:
+    - nginx_nginxorg_repo
 
 - name: Add nginx.org yum repository for {{ os_name }}/{{ ansible_distribution_major_version }}
   yum_repository:

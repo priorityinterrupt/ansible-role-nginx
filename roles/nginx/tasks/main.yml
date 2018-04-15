@@ -1,7 +1,7 @@
-- name: Include operating system specific variables. 
+- name: Include operating system specific variables for {{ ansible_os_family }}. 
   include_vars: "{{ ansible_os_family }}.yml"
 
-- name: INCLUDE | nginx installation configuration for {{ ansible_os_family }}. 
+- name: Include nginx installation configuration for {{ ansible_os_family }}. 
   include: "install_{{ ansible_os_family }}.yml"
 
 - name: Create {{ nginx_group }} group.
@@ -18,4 +18,4 @@
 
 - name: Generate {{ nginx_conf_root }}/nginx.conf.
   template: "src=nginx.conf.j2 dest={{ nginx_conf_root }}/nginx.conf" 
-  notify: reload nginx 
+  notify: reload-nginx 

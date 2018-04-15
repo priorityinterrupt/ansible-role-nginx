@@ -4,13 +4,16 @@
   apt_key:
     data: "{{ lookup('file', 'nginx_signing.key') }}"
     state: present
-  when: nginx_nginxorg_repo    
+  when: 
+    - nginx_nginxorg_repo    
 
 - name: Configure URL for nginx repository. 
   set_fact:
     repo_url: "{{ 'http://nginx.org/packages/' + ansible_distribution|lower + '/' 
       if not nginx_nginxorg_mainline else
       'http://nginx.org/packages/mainline/' + ansible_distribution|lower + '/' }}"
+  when:
+    - nginx_nginxorg_repo
 
 - name: Add nginx.org apt repository for {{ ansible_distribution_release }} 
   apt_repository:

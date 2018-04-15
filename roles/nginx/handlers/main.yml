@@ -1,11 +1,10 @@
 ---
-- name: restart nginx
+- name: restart-nginx
   service: name=nginx state=restarted 
 
-- name: reload nginx
+- name: reload-nginx
   service: name=nginx state=reloaded
 
 - name: yum-clean-metadata
   command: yum clean metadata
-  args:
-    warn: no
+  args: warn=no
