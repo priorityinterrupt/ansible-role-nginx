@@ -30,3 +30,7 @@ Variables used in top level nginx.conf and filesystem configuration.
     nginx_tcp_nopush: "off"
     nginx_keepalive_timeout: 65
     nginx_gzip: "off"
+
+## Warning
+
+If you enable nginx_nginxorg_repo on a RedHat based operating system this role will remove the EPEL repository if installed due to it interfering with the use of the nginx.org repository for nginx. 
