@@ -5,7 +5,7 @@
 # will have no effect without use_nginx_repo. 
 nginx_nginxorg_repo: no
 nginx_nginxorg_mainline: no
-nginx_nginxorg_supported: ['xenial', 'trusty', 'artful', 'jessie', 'streech']
+nginx_nginxorg_supported: ['xenial', 'trusty', 'artful', 'jessie', 'streech', '6', '7']
 
 # Variables used in top level nginx.conf and filesystem configuration. 
 nginx_conf_root: /etc/nginx
