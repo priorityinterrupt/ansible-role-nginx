@@ -1,0 +1,5 @@
+---
+
+nginx_nginxorg_supported: ['6', '7']
+nginx_user: nginx
+nginx_group: nginx

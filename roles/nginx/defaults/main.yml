@@ -5,15 +5,12 @@
 # will have no effect without use_nginx_repo. 
 nginx_nginxorg_repo: no
 nginx_nginxorg_mainline: no
-nginx_nginxorg_supported: ['xenial', 'trusty', 'artful', 'jessie', 'streech', '6', '7']
 
 # Variables used in top level nginx.conf and filesystem configuration. 
 nginx_conf_root: /etc/nginx
 nginx_sites_enabled: "{{ nginx_conf_root }}/sites-enabled" 
 nginx_sites_available: "{{ nginx_conf_root }}/sites-available" 
-nginx_user: www-data
-nginx_group: www-data 
-nginx_worker_processes: auto
+nginx_worker_processes: "1"
 nginx_error_log: /var/log/nginx/error.log
 nginx_error_log_level: warn
 nginx_pid: /var/run/nginx.pid
