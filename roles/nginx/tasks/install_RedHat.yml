@@ -6,13 +6,18 @@
     state: present
   when: nginx_nginxorg_repo    
 
-- name: Add nginx.org yum repository for {{ ansible_distribution }}/{{ ansible_distribution_major_version }} | STABLE
+- name: Set os_name for use in baseurl in yum repository. 
+  set_fact:
+    os_name: "{{ 'rhel' if ansible_distribution == 'RedHat' else 'centos' }}" 
+
+- name: Add nginx.org yum repository for {{ os_name }}/{{ ansible_distribution_major_version }} | STABLE
   yum_repository:
     name: nginx_stable
     description: "Latest stable version of nginx from nginx.org"
     enabled: "yes"
     gpgcheck: "yes"
-    baseurl: http://nginx.org/packages/{{ ansible_distribution | lower }}/{{ ansible_distribution_major_version }}/$basearch/
+    baseurl: http://nginx.org/packages/{{ os_name }}/{{ ansible_distribution_major_version }}/$basearch/
+    cost: "1"
     state: present
   register: nginx_nginxorg_repo_added
   when: 
@@ -20,13 +25,14 @@
     - nginx_nginxorg_repo
     - not nginx_nginxorg_mainline
 
-- name: Add nginx.org yum repository for {{ ansible_distribution }}/{{ ansible_distribution_major_version }} cd | MAINLINE
+- name: Add nginx.org yum repository for {{ os_name }}/{{ ansible_distribution_major_version }} cd | MAINLINE
   yum_repository:
     name: nginx_mainstream
     description: "Latest mainstream version of nginx from nginx.org"
     enabled: "yes"
     gpgcheck: "yes"
-    baseurl: http://nginx.org/packages/{{ ansible_distribution | lower }}/{{ ansible_distribution_major_version }}/$basearch/
+    baseurl: http://nginx.org/packages/{{ os_name }}/{{ ansible_distribution_major_version }}/$basearch/
+    cost: "1"
     state: present
   register: nginx_nginxorg_repo_added
   when: 
@@ -34,8 +40,16 @@
     - nginx_nginxorg_repo
     - nginx_nginxorg_mainline
 
+- name: Disable EPEL
+  yum_repository:
+    name: epel
+    state: absent
+  notify: yum-clean-metadata
+  when: 
+    - nginx_nginxorg_repo
+
 - name: Install nginx.
-  yum: name=nginx state=present
+  yum: name=nginx state=present update_cache=yes
   when:
     - (nginx_nginxorg_repo and nginx_nginxorg_repo_added) or 
       (not nginx_nginxorg_repo and not nginx_nginxorg_repo_added)
