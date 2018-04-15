@@ -3,8 +3,8 @@
 Set these variables if you wish to use the upstream nginx.org repositories. 
 Leave them disabled to use distribution supplied nginx. The use_nginx_mainline variable will have no effect without use_nginx_repo.
 
-    nginx_use_nginxorg_repo: no
-    nginx_use_nginxorg_mainline: no
+    nginx_nginxorg_repo: no
+    nginx_nginxorg_mainline: no
 
 Variables used in top level nginx.conf and filesystem configuration.
 
