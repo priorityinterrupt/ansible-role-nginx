@@ -1,5 +1,5 @@
-- name: INCLUDE | nginx installation configuration for {{ ansible_distribution }}. 
-  include: "install_{{ ansible_distribution }}.yml"
+- name: INCLUDE | nginx installation configuration for {{ ansible_os_family }}. 
+  include: "install_{{ ansible_os_family }}.yml"
 
 - name: Create {{ nginx_group }} group.
   group: name={{ nginx_group }} state=present 
