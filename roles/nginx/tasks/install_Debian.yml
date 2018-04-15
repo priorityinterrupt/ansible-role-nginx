@@ -4,28 +4,33 @@
   apt_key:
     url: https://nginx.org/keys/nginx_signing.key
     state: present
-  when: nginx_use_nginxorg_repo    
+  when: nginx_nginxorg_repo    
 
 - name: Add nginx.org apt repository for {{ ansible_distribution_release }} | STABLE
   apt_repository:
     repo: deb http://nginx.org/packages/debian/ {{ ansible_distribution_release }} nginx
     state: present
+  register: nginx_nginxorg_repo_added
   when: 
-    - ansible_distribution_release == "jessie" or ansible_distribution_release == "stretch"
-    - nginx_use_nginxorg_repo
-    - not nginx_use_nginxorg_mainline
+    - ansible_distribution_release in nginx_nginxorg_supported
+    - nginx_nginxorg_repo
+    - not nginx_nginxorg_mainline
 
 - name: Add nginx.org apt repository for {{ ansible_distribution_release }} | MAINLINE
   apt_repository:
     repo: deb http://nginx.org/packages/mainline/debian/ {{ ansible_distribution_release }} nginx
     state: present
+  regsiter: nginx_nginxorg_repo_added
   when: 
-    - ansible_distribution_release == "jessie" or {{ ansible_distribution_release }} == "stretch"
-    - nginx_use_nginxorg_repo
-    - nginx_use_nginxorg_mainline
+    - ansible_distribution_release in nginx_nginxorg_supported
+    - nginx_nginxorg_repo
+    - nginx_nginxorg_mainline
 
 - name: Install nginx.
   apt: name=nginx state=present
+  when:
+    - (nginx_nginxorg_repo and nginx_nginxorg_repo_added.stdout != -1) or 
+      (not nginx_nginxorg_repo and not nginx_nginxorg_repo_added.stdout = -1)
 
 - name: Ensure nginx is running and will start on boot. 
   service: name=nginx state=started enabled=yes

@@ -3,8 +3,9 @@
 # Set these variables if you wish to use the upstream nginx.org repositories. 
 # Leave them disabled to use distribution supplied nginx. use_nginx_mainline 
 # will have no effect without use_nginx_repo. 
-nginx_use_nginxorg_repo: no
-nginx_use_nginxorg_mainline: no
+nginx_nginxorg_repo: no
+nginx_nginxorg_mainline: no
+nginx_nginxorg_supported: ['xenial', 'trusty', 'artful', 'jessie', 'streech']
 
 # Variables used in top level nginx.conf and filesystem configuration. 
 nginx_conf_root: /etc/nginx
