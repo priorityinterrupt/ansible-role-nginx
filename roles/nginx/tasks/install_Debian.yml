@@ -29,8 +29,8 @@
 - name: Install nginx.
   apt: name=nginx state=present
   when:
-    - (nginx_nginxorg_repo and nginx_nginxorg_repo_added.stdout != -1) or 
-      (not nginx_nginxorg_repo and not nginx_nginxorg_repo_added.stdout = -1)
+    - (nginx_nginxorg_repo and nginx_nginxorg_repo_added) or 
+      (not nginx_nginxorg_repo and not nginx_nginxorg_repo_added)
 
 - name: Ensure nginx is running and will start on boot. 
   service: name=nginx state=started enabled=yes
