@@ -1,0 +1,5 @@
+{% for k,v in item.server.items() if k.find('upstream') != -1 %}
+upstream {{ v.name }} {
+    {{ v.type }} {{v.destination}};
+}
+{% endfor %}

@@ -27,3 +27,18 @@ nginx_sendfile: "on"
 nginx_tcp_nopush: "off"
 nginx_keepalive_timeout: 65
 nginx_gzip: "off"
+
+#nginx_upstream_servers:
+#  - server:
+#      file_name: "django-upstream.conf"
+#      upstream: {name: "django", type: "server", destination: "127.0.0.1:1111"}
+
+nginx_sites:
+  - server:
+      file_name: ansible-default.conf
+      listen: 80
+      server_name: localhost
+      root: "/var/www/ansible-default"
+#      locations1: {name: "/", uwsgi_pass: "django", include: "uwsgi_params"}
+#      locations2: {name: "/static/", alias: "/var/www/static"}
+#      locations3: {name: "/media/", alias: "/var/www/media"}
