@@ -5,30 +5,30 @@
     data: "{{ lookup('file', 'nginx_signing.key') }}"
     state: present
   when: 
-    - nginx_nginxorg_repo    
+    - nginx_upstream_repo    
 
 - name: Configure URL for nginx repository. 
   set_fact:
     repo_url: "{{ 'http://nginx.org/packages/' + ansible_distribution|lower + '/' 
-      if not nginx_nginxorg_mainline else
+      if not nginx_mainline else
       'http://nginx.org/packages/mainline/' + ansible_distribution|lower + '/' }}"
   when:
-    - nginx_nginxorg_repo
+    - nginx_upstream_repo
 
 - name: Add nginx.org apt repository for {{ ansible_distribution_release }} 
   apt_repository:
     repo: "deb {{ repo_url }} {{ ansible_distribution_release }} nginx"
     state: present
-  register: nginx_nginxorg_repo_added
+  register: nginx_upstream_added
   when: 
-    - ansible_distribution_release in nginx_nginxorg_supported
-    - nginx_nginxorg_repo
+    - ansible_distribution_release in nginx_upstream_supported
+    - nginx_upstream_repo
 
 - name: Install nginx.
   apt: name=nginx state=present
   when:
-    - (nginx_nginxorg_repo and nginx_nginxorg_repo_added) or 
-      (not nginx_nginxorg_repo and not nginx_nginxorg_repo_added)
+    - (nginx_upstream_repo and nginx_upstream_added) or 
+      (not nginx_upstream_repo and not nginx_upstream_added)
 
 - name: Ensure nginx is running and will start on boot. 
   service: name=nginx state=started enabled=yes

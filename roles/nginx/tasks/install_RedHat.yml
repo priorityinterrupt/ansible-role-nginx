@@ -6,22 +6,22 @@
 - name: Copy nginx_signing.key
   copy: src=files/nginx_signing.key dest=/tmp/nginx_signing.key
   when: 
-    - nginx_nginxorg_repo
+    - nginx_upstream_repo
 
 - name: Add nginx.org signing key
   rpm_key:
     key: /tmp/nginx_signing.key
     state: present
   when: 
-    - nginx_nginxorg_repo    
+    - nginx_upstream_repo    
 
 - name: Configure URL for nginx repository. 
   set_fact:
     repo_url: "{{ 'http://nginx.org/packages/' + os_name + '/' + ansible_distribution_major_version + '/$basearch/' 
-      if not nginx_nginxorg_mainline else 
+      if not nginx_mainline else 
       'http://nginx.org/packages/mainline/' + os_name + '/' + ansible_distribution_major_version + '/$basearch/' }}"
   when:
-    - nginx_nginxorg_repo
+    - nginx_upstream_repo
 
 - name: Add nginx.org yum repository for {{ os_name }}/{{ ansible_distribution_major_version }}
   yum_repository:
@@ -31,22 +31,22 @@
     gpgcheck: "yes"
     baseurl: "{{ repo_url }}"
     state: present
-  register: nginx_nginxorg_repo_added
+  register: nginx_upstream_added
   when: 
-    - ansible_distribution_major_version in nginx_nginxorg_supported
-    - nginx_nginxorg_repo
+    - ansible_distribution_major_version in nginx_upstream_supported
+    - nginx_upstream_repo
 
 - name: Disable EPEL
   yum_repository: name=epel state=absent
   notify: yum-clean-metadata
   when: 
-    - nginx_nginxorg_repo
+    - nginx_upstream_repo
 
 - name: Install nginx.
   yum: name=nginx state=present update_cache=yes
   when:
-    - (nginx_nginxorg_repo and nginx_nginxorg_repo_added) or 
-      (not nginx_nginxorg_repo and not nginx_nginxorg_repo_added)
+    - (nginx_upstream_repo and nginx_upstream_added) or 
+      (not nginx_upstream_repo and not nginx_upstream_added)
 
 - name: Ensure nginx is running and will start on boot. 
   service: name=nginx state=started enabled=yes

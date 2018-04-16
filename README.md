@@ -3,8 +3,8 @@
 Set these variables if you wish to use the upstream nginx.org repositories. 
 Leave them disabled to use distribution supplied nginx. The use_nginx_mainline variable will have no effect without use_nginx_repo.
 
-    nginx_nginxorg_repo: no
-    nginx_nginxorg_mainline: no
+    nginx_upstream_repo: no
+    nginx_mainline: no
 
 Variables used in top level nginx.conf and filesystem configuration.
 
@@ -33,4 +33,4 @@ Variables used in top level nginx.conf and filesystem configuration.
 
 ## Warning
 
-If you enable nginx_nginxorg_repo on a RedHat based operating system this role will remove the EPEL repository if installed due to it interfering with the use of the nginx.org repository for nginx. 
+If you enable nginx_upstream_repo on a RedHat based operating system this role will remove the EPEL repository if installed due to it interfering with the use of the nginx.org repository for nginx. 

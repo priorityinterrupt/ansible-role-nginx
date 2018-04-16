@@ -1,5 +1,5 @@
 ---
 
-nginx_nginxorg_supported: ['xenial', 'trusty', 'artful', 'jessie', 'streech']
+nginx_upstream_supported: ['xenial', 'trusty', 'artful', 'jessie', 'streech']
 nginx_user: www-data
 nginx_group: www-data 
