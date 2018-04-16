@@ -6,7 +6,7 @@ Leave them disabled to use distribution supplied nginx. The use_nginx_mainline v
     nginx_upstream_repo: no
     nginx_mainline: no
 
-Variables used in top level nginx.conf and filesystem configuration.
+Variables used in top level nginx.conf and filesystem configuration. You may overwrite these in the ansible playbook or supporting code that calls this role or by updating roles/nginx/defaults/main.yml.  
 
     nginx_conf_root: /etc/nginx
     nginx_sites_enabled: "{{ nginx_conf_root }}/sites-enabled" 
@@ -31,6 +31,24 @@ Variables used in top level nginx.conf and filesystem configuration.
     nginx_keepalive_timeout: 65
     nginx_gzip: "off"
 
+One or more server blocks can be defined by updating nginx_sites. You may overwrite this variable in the ansible playbook or supporting code that calls this role or by updating roles/nginx/defaults/main.yml. Simply add a new server block under the existing nginx_sites data structure for each new server. Additionally an arbitrary number of locations may be added to each server. 
+
+    nginx_sites:
+      - server:
+        file_name: ansible-default.conf
+        listen: 80
+        server_name: localhost
+        root: "/var/www/ansible-default"
+        locations1: {name: "/", uwsgi_pass: "django", include: "uwsgi_params"}
+        locations2: {name: "/static/", alias: "/var/www/static"}
+        locations3: {name: "/media/", alias: "/var/www/media"}
+
+You may define an arbitrary number of upstream servers using the nginx_upstream_servers data structure. You may overwrite this variable in the ansible playbook or supporting code that calls this role or by updating roles/nginx/defaults/main.yml. Simply add a new server block under the existing nginx_upstream_servers data structure for each new upstream server.
+
+    nginx_upstream_servers:
+      - server:
+        file_name: "django-upstream.conf"
+        upstream: {name: "django", type: "server", destination: "127.0.0.1:1111"}
 ## Warning
 
 If you enable nginx_upstream_repo on a RedHat based operating system this role will remove the EPEL repository if installed due to it interfering with the use of the nginx.org repository for nginx. 
