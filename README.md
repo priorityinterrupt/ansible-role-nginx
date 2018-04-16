@@ -1,6 +1,6 @@
 # ansible-role-nginx
 
-Set these variables if you wish to use the upstream nginx.org repositories. 
+Set these variables if you wish to use the upstream [nginx.org](https://nginx.org/en/linux_packages.html) repositories. 
 Leave them disabled to use distribution supplied nginx. The use_nginx_mainline variable will have no effect without use_nginx_repo.
 
     nginx_upstream_repo: no
