@@ -34,4 +34,11 @@
     - nginx_sites is defined
     - item['server'] != None
 
-
+- name: Create links from sites-available to sites-enabled.
+  file: "path=/etc/nginx/sites-enabled/{{ item['server']['file_name'] }} src=/etc/nginx/sites-available/{{ item['server']['file_name'] }} state=link"
+  with_items: "{{ nginx_sites }}"
+  when:
+    - nginx_sites is defined  
+    - item['server'] != None
+  notify: 
+   - reload-nginx
