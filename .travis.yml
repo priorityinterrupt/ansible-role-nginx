@@ -29,6 +29,6 @@ script:
 
   - 'docker run --detach --volume="${PWD}"/roles/nginx:/etc/ansible/roles/nginx:ro ${run_opts} geerlingguy/docker-${distro}-ansible:latest "${init}" > "${container_id}"'
 
-  - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm ansible-playbook /etc/ansible/roles/nginx/tests/test.yml --syntax-check'
+  - 'docker exec "$(cat ${container_id})" env ANSIBLE_FORCE_COLOR=1 TERM=xterm ansible-playbook /etc/ansible/roles/nginx/tests/test.yml --syntax-check'
 
-  - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm ansible-playbook /etc/ansible/roles/nginx/tests/test.yml'
+  - 'docker exec "$(cat ${container_id})" env ANSIBLE_FORCE_COLOR=1 TERM=xterm ansible-playbook /etc/ansible/roles/nginx/tests/test.yml'
