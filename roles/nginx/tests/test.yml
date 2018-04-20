@@ -2,4 +2,7 @@
 - hosts: all
 
   roles:
-    - nginx
+    - nginx 
+  vars:
+    nginx_upstream_repo: yes
+    nginx_mainline: yes
