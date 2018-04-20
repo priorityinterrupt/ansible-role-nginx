@@ -1,0 +1,11 @@
+galaxy_info:
+  author: Justin Derleth
+  description: Install nginx with arbitrary number of sites.  Supports the use of upstream nginx.org repositories. 
+
+  license: MIT
+
+  min_ansible_version: 2.0
+
+  galaxy_tags: []
+
+dependencies: []

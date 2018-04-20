@@ -7,7 +7,7 @@ Leave them disabled to use distribution supplied nginx. The use_nginx_mainline v
     nginx_upstream_repo: no
     nginx_mainline: no
 
-Variables used in top level nginx.conf and filesystem configuration. You may overwrite these in the ansible playbook or supporting code that calls this role or by updating roles/nginx/defaults/main.yml.  
+Variables used in top level nginx.conf and filesystem configuration. 
 
     nginx_conf_root: /etc/nginx
     nginx_sites_enabled: "{{ nginx_conf_root }}/sites-enabled" 
@@ -32,7 +32,7 @@ Variables used in top level nginx.conf and filesystem configuration. You may ove
     nginx_keepalive_timeout: 65
     nginx_gzip: "off"
 
-One or more server blocks can be defined by updating nginx_sites. You may overwrite this variable in the ansible playbook or supporting code that calls this role or by updating roles/nginx/defaults/main.yml. Simply add a new server block under the existing nginx_sites data structure for each new server. Additionally an arbitrary number of locations may be added to each server. 
+One or more server blocks can be defined by updating nginx_sites. Additionally an arbitrary number of locations may be added to each server. 
 
     nginx_sites:
       - server:
@@ -44,7 +44,7 @@ One or more server blocks can be defined by updating nginx_sites. You may overwr
         locations2: {name: "/static/", alias: "/var/www/static"}
         locations3: {name: "/media/", alias: "/var/www/media"}
 
-You may define an arbitrary number of upstream servers using the nginx_upstream_servers data structure. You may overwrite this variable in the ansible playbook or supporting code that calls this role or by updating roles/nginx/defaults/main.yml. Simply add a new server block under the existing nginx_upstream_servers data structure for each new upstream server.
+You may define an arbitrary number of upstream servers using the nginx_upstream_servers data structure. 
 
     nginx_upstream_servers:
       - server:
