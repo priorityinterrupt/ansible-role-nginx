@@ -9,9 +9,8 @@ Leave them disabled to use distribution supplied nginx. The use_nginx_mainline v
 
 Variables used in top level nginx.conf and filesystem configuration. 
 
-    nginx_conf_root: /etc/nginx
-    nginx_sites_enabled: "{{ nginx_conf_root }}/sites-enabled" 
-    nginx_sites_available: "{{ nginx_conf_root }}/sites-available" 
+    nginx_sites_enabled: "/etc/nginx/sites-enabled" 
+    nginx_sites_available: "/etc/nginx/sites-available" 
     nginx_user: www-data
     nginx_group: www-data 
     nginx_worker_processes: auto
