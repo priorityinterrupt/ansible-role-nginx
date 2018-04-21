@@ -8,7 +8,7 @@ nginx_mainline: no
 
 # Variables used in top level nginx.conf and filesystem configuration. 
 nginx_sites_enabled: /etc/nginx/sites-enabled 
-nginx_sites_available: /etc/nginx/sites-available" 
+nginx_sites_available: /etc/nginx/sites-available
 nginx_worker_processes: "1"
 nginx_error_log: /var/log/nginx/error.log
 nginx_error_log_level: warn
