@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/priorityinterrupt/ansible-role-nginx.svg?branch=master)](https://travis-ci.org/priorityinterrupt/ansible-role-nginx)
+[![Build Status](https://travis-ci.org/thecommandline/ansible-role-nginx.svg?branch=master)](https://travis-ci.org/thecommandline/ansible-role-nginx)
 # ansible-role-nginx
 
 Set these variables if you wish to use the upstream [nginx.org](https://nginx.org/en/linux_packages.html) repositories. 
