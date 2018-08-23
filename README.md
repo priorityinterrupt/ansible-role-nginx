@@ -51,4 +51,4 @@ You may define an arbitrary number of upstream servers using the nginx_upstream_
         upstream: {name: "django", type: "server", destination: "127.0.0.1:1111"}
 ## Warning
 
-If you enable nginx_upstream_repo on a RedHat based operating system this role will remove the EPEL repository if installed due to it interfering with the use of the nginx.org repository for nginx. 
+If you enable nginx_upstream_repo on a RedHat based operating system this role will remove the EPEL repository if installed due to it interfering with the use of the upstream nginx.org repository for nginx. 
